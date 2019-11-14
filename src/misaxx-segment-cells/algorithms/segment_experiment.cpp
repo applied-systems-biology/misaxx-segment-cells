@@ -162,7 +162,8 @@ namespace {
 }
 
 void segment_experiment::work() {
-    cv::images::grayscale32f img = get_as_grayscale_float_copy(m_inputImage.access_readonly().get());
+    auto access = m_inputImage.access_readonly();
+    cv::images::grayscale32f img = get_as_grayscale_float_copy(access.get());
     cv::GaussianBlur(img.clone(), img, cv::Size(0,0), 1.0);
     cv::images::mask thresholded { img.size(), 0 };
     cv::threshold(get_as_mask(img), thresholded, 0, 255, cv::THRESH_OTSU);
