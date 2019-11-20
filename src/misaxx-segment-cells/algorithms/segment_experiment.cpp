@@ -183,11 +183,22 @@ void segment_experiment::work() {
     cv::connectedComponents(local_maxima, seeds, 4, CV_32S);
     seeds.setTo(-1, thresholded_inv);
 
-    // Apply watershedding
-    cv::Mat heightMap_8uc3 { img.size(), CV_8UC3, cv::Scalar::all(0) };
-    cv::cvtColor(thresholded, heightMap_8uc3, CV_GRAY2BGR);
+    // Convert distances into watershed heightmap (Because OpenCV implementation requires RGB)
+    cv::Mat3b heightMap { img.size(), cv::Vec3b(0,0,0) };
+    const double max_distance = get_max_value(distance);
+    for(int y = 0; y < img.rows; ++y) {
+        const float *row_src = distance[y];
+        cv::Vec3b *row_dst = heightMap[y];
+        for(int x = 0; x < img.cols; ++x) {
+            auto v = static_cast<uchar>((max_distance - row_src[x]) / max_distance * 255);
+            row_dst[x] = cv::Vec3b(v, v, v);
+        }
+    }
 
-    cv::watershed(heightMap_8uc3, seeds);
+    // Apply watershedding
+    cv::cvtColor(thresholded, heightMap, CV_GRAY2BGR);
+
+    cv::watershed(heightMap, seeds);
     seeds.setTo(0, thresholded_inv);
 
     m_outputImage.write(seeds > 0);
