@@ -12,15 +12,20 @@
 
 #include <misaxx/core/module_info.h>
 #include <misaxx-segment-cells/module_info.h>
+#include <misaxx/imaging/module_info.h>
 
 misaxx::misa_module_info misaxx_segment_cells::module_info() {
     misaxx::misa_module_info info;
     info.set_id("misaxx-segment-cells");
     info.set_version("1.0.0");
     info.set_name("misaxx-segment-cells");
-    info.set_description("");
+    info.set_description("Segments cells with a distance transform watershed algorithm");
+    info.add_author("Ruman Gerst");
+    info.set_license("BSD-2-Clause");
+    info.set_organization("Leibniz Institute for Natural Product Research and Infection Biology - Hans Knöll Institute (HKI), Jena, Germany");
+    info.set_url("https://applied-systems-biology.github.io/misa-framework/");
 
     info.add_dependency(misaxx::module_info());
-    // TODO: Add dependencies via info.add_dependency()
+    info.add_dependency(misaxx::imaging::module_info());
     return info;
 }
