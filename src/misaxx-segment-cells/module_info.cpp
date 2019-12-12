@@ -18,7 +18,7 @@ misaxx::misa_module_info misaxx_segment_cells::module_info() {
     misaxx::misa_module_info info;
     info.set_id("misaxx-segment-cells");
     info.set_version("1.0.0");
-    info.set_name("misaxx-segment-cells");
+    info.set_name("MISA++ Cell segmentation");
     info.set_description("Segments cells with a distance transform watershed algorithm");
     info.add_author("Ruman Gerst");
     info.set_license("BSD-2-Clause");
